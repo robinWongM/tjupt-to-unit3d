@@ -50,7 +50,7 @@ class FromGazelle extends Command
     {
         $capsule = $this->getCapsule();
 
-        if (!$capsule->schema()->hasTable('users_main') || !$capsule->schema()->hasTable('users_info')) {
+        if (!$capsule->schema('gazelle')->hasTable('users_main') || !$capsule->schema()->hasTable('users_info')) {
             throw new \ErrorException('Gazelle user tables missing.');
         }
 
@@ -60,7 +60,7 @@ class FromGazelle extends Command
         $userInfo = new UserInfo($capsule);
         $userInfo->importAll();
 
-        if (!$capsule->schema()->hasTable('torrents')) {
+        if (!$capsule->schema('gazelle')->hasTable('torrents')) {
             throw new \ErrorException('Gazelle torrent tables missing.');
         }
 
