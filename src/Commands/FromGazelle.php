@@ -4,6 +4,7 @@ namespace pxgamer\GazelleToUnit3d\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Capsule\Manager;
+use pxgamer\GazelleToUnit3d\Models\Torrent;
 use pxgamer\GazelleToUnit3d\Models\User;
 use pxgamer\GazelleToUnit3d\Models\UserInfo;
 
@@ -58,6 +59,13 @@ class FromGazelle extends Command
 
         $userInfo = new UserInfo($capsule);
         $userInfo->importAll();
+
+        if (!$capsule->schema()->hasTable('torrents')) {
+            throw new \ErrorException('Gazelle torrent tables missing.');
+        }
+
+        $torrent = new Torrent($capsule);
+        $torrent->importAll();
     }
 
     private function getCapsule()
