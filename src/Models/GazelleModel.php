@@ -17,6 +17,17 @@ class GazelleModel
 
     public function importAll()
     {
-        //
+        $gazelleConnection = $this->capsule->getConnection('gazelle');
+        $all = $gazelleConnection
+            ->table($this->tables['gazelle'])
+            ->get(array_keys($this->columns));
+
+        foreach ($all as $row) {
+            $this->processRow($row);
+        }
+    }
+
+    protected function processRow(\stdClass $row)
+    {
     }
 }

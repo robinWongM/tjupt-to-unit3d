@@ -72,16 +72,34 @@ class FromGazelle extends Command
     {
         $capsule = new Manager();
 
-        $capsule->addConnection([
-            'driver'    => $this->option('driver'),
-            'host'      => $this->option('host'),
-            'database'  => $this->option('database'),
-            'username'  => $this->option('username'),
-            'password'  => $this->option('password'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => $this->option('driver'),
-        ]);
+        $capsule->addConnection(
+            [
+                'driver'    => $this->option('driver'),
+                'host'      => $this->option('host'),
+                'database'  => $this->option('database'),
+                'username'  => $this->option('username'),
+                'password'  => $this->option('password'),
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => $this->option('driver'),
+            ],
+            'gazelle'
+        );
+
+        $capsule->addConnection(
+            [
+                'driver'    => env('DB_CONNECTION', 'mysql'),
+                'host'      => env('DB_HOST', '127.0.0.1'),
+                'port'      => env('DB_PORT', 3306),
+                'database'  => env('DB_DATABASE', 'unit3d'),
+                'username'  => env('DB_USERNAME', 'root'),
+                'password'  => env('DB_PASSWORD', 'root'),
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+            ]
+        );
+
+        $capsule->setAsGlobal();
 
         return $capsule;
     }
