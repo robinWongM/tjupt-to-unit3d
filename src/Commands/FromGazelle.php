@@ -81,7 +81,7 @@ class FromGazelle extends Command
                 'password'  => $this->option('password'),
                 'charset'   => 'utf8',
                 'collation' => 'utf8_unicode_ci',
-                'prefix'    => $this->option('driver'),
+                'prefix'    => $this->option('prefix'),
             ],
             'gazelle'
         );
