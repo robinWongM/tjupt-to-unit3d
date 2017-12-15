@@ -5,6 +5,9 @@ namespace pxgamer\GazelleToUnit3d\Commands;
 use Illuminate\Console\Command;
 use pxgamer\GazelleToUnit3d\Functionality\Imports;
 
+/**
+ * Class FromGazelle
+ */
 class FromGazelle extends Command
 {
     /**
