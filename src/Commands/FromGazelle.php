@@ -3,10 +3,7 @@
 namespace pxgamer\GazelleToUnit3d\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Capsule\Manager;
-use pxgamer\GazelleToUnit3d\Models\Torrent;
-use pxgamer\GazelleToUnit3d\Models\User;
-use pxgamer\GazelleToUnit3d\Models\UserInfo;
+use pxgamer\GazelleToUnit3d\Functionality\Imports;
 
 class FromGazelle extends Command
 {
@@ -16,12 +13,12 @@ class FromGazelle extends Command
      * @var string
      */
     protected $signature = 'unit3d:from-gazelle
-                            {--driver=mysql : The Gazelle driver type to use (mysql, sqlsrv, etc.).}
-                            {--host=localhost : The Gazelle hostname or IP.}
-                            {--database= : The Gazelle database to select from.}
-                            {--username= : The Gazelle mysql user.}
-                            {--password= : The Gazelle mysql password.}
-                            {--prefix= : The Gazelle hostname or IP.}';
+                            {--driver=mysql : The driver type to use (mysql, sqlsrv, etc.).}
+                            {--host=localhost : The hostname or IP.}
+                            {--database= : The database to select from.}
+                            {--username= : The database user.}
+                            {--password= : The database password.}
+                            {--prefix= : The database hostname or IP.}';
 
     /**
      * The console command description.
@@ -44,63 +41,47 @@ class FromGazelle extends Command
      * Execute the console command.
      *
      * @return mixed
+     *
      * @throws \ErrorException
      */
     public function handle()
     {
-        $capsule = $this->getCapsule();
+        $this->checkRequired($this->options());
 
-        if (!$capsule->schema('gazelle')->hasTable('users_main') || !$capsule->schema()->hasTable('users_info')) {
-            throw new \ErrorException('Gazelle user tables missing.');
-        }
-
-        $users = new User($capsule);
-        $users->importAll();
-
-        $userInfo = new UserInfo($capsule);
-        $userInfo->importAll();
-
-        if (!$capsule->schema('gazelle')->hasTable('torrents')) {
-            throw new \ErrorException('Gazelle torrent tables missing.');
-        }
-
-        $torrent = new Torrent($capsule);
-        $torrent->importAll();
-    }
-
-    private function getCapsule()
-    {
-        $capsule = new Manager();
-
-        $capsule->addConnection(
-            [
+        config([
+            'database.connections.imports' => [
                 'driver'    => $this->option('driver'),
                 'host'      => $this->option('host'),
                 'database'  => $this->option('database'),
                 'username'  => $this->option('username'),
                 'password'  => $this->option('password'),
-                'charset'   => 'utf8',
-                'collation' => 'utf8_unicode_ci',
                 'prefix'    => $this->option('prefix'),
-            ],
-            'gazelle'
-        );
-
-        $capsule->addConnection(
-            [
-                'driver'    => env('DB_CONNECTION', 'mysql'),
-                'host'      => env('DB_HOST', '127.0.0.1'),
-                'port'      => env('DB_PORT', 3306),
-                'database'  => env('DB_DATABASE', 'unit3d'),
-                'username'  => env('DB_USERNAME', 'root'),
-                'password'  => env('DB_PASSWORD', 'root'),
                 'charset'   => 'utf8',
                 'collation' => 'utf8_unicode_ci',
-            ]
-        );
+            ],
+        ]);
 
-        $capsule->setAsGlobal();
+        $database = DB::connection('imports');
 
-        return $capsule;
+        Imports::importTable($database, 'User', 'users_main', User::class);
+        Imports::importTable($database, 'Torrent', 'torrents', Torrent::class);
+    }
+
+    /**
+     * @param array $options
+     */
+    public function checkRequired(array $options)
+    {
+        $requiredOptions = [
+            'database',
+            'username',
+            'password',
+        ];
+
+        foreach ($requiredOptions as $option) {
+            if (!key_exists($option, $options) || !$options[$option]) {
+                throw new \InvalidArgumentException('Option `'.$option.'` not provided.');
+            }
+        }
     }
 }
