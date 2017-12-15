@@ -51,7 +51,7 @@ class Mapping
     public static function mapTorrent(\stdClass $data): array
     {
         return [
-            'info_hash'   => unpack('H*', $data->info_hash)[0] ?? null,
+            'info_hash'   => unpack('H*', $data->info_hash)[1] ?? null,
             'name'        => $data->filename ?? 0,
             'size'        => $data->Size ?? 0,
             'announce'    => $data->announce_url ?? null,
