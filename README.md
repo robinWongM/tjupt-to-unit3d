@@ -22,7 +22,7 @@ vendor/
 Via Composer
 
 ``` bash
-$ composer require pxgamer/gazelle-to-unit3d
+$ composer require pxgamer/gazelle-to-unit3d --dev
 ```
 
 To install, just:
