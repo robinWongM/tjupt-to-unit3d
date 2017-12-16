@@ -2,7 +2,10 @@
 
 namespace pxgamer\GazelleToUnit3d\Commands;
 
+use App\Torrent;
+use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use pxgamer\GazelleToUnit3d\Functionality\Imports;
 
 /**
