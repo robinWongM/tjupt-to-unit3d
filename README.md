@@ -25,9 +25,12 @@ Via Composer
 $ composer require pxgamer/gazelle-to-unit3d
 ```
 
-## Usage
+To install, just:
+- Require this package from your [UNIT3D][unit3d] install.
+- Using Laravel <5.5, add the `pxgamer\GazelleToUnit3d\ServiceProvider::class` to your [providers].
+- Add an empty `imports` entry to your database config.
 
-To install, just require this package from your [UNIT3D][unit3d] install.
+## Usage
 
 For instructions on usage, run:
 
