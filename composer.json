@@ -17,7 +17,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "pxgamer\\GazelleToUnit3d\\": "tests"
+            "pxgamer\\GazelleToUnit3d\\Tests\\": "tests"
         }
     },
     "scripts": {
