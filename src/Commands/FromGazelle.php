@@ -93,7 +93,7 @@ class FromGazelle extends Command
         ];
 
         foreach ($requiredOptions as $option) {
-            if (! key_exists($option, $options) || ! $options[$option]) {
+            if (! array_key_exists($option, $options) || ! $options[$option]) {
                 throw new \InvalidArgumentException('Option `'.$option.'` not provided.');
             }
         }
