@@ -1,6 +1,6 @@
 <?php
 
-namespace pxgamer\GazelleToUnit3d\Functionality;
+namespace pxgamer\GazelleToUnit3d\Tests;
 
 use Orchestra\Testbench\TestCase;
 use Illuminate\Foundation\Application;

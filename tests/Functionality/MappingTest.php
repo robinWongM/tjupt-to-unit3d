@@ -1,6 +1,6 @@
 <?php
 
-namespace pxgamer\GazelleToUnit3d\Functionality;
+namespace pxgamer\GazelleToUnit3d\Tests\Functionality;
 
 use Carbon\Carbon;
 use Orchestra\Testbench\TestCase;
