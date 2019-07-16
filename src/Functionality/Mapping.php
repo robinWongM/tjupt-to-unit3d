@@ -37,8 +37,8 @@ class Mapping
             'active' => $data->Enabled ?? true,
             'hidden' => $data->Visible ?? true,
             'invites' => $data->Invites ?? 0,
-            'created_at' => Carbon::createFromTimestamp(strtotime($data->joined)),
-            'last_login' => Carbon::createFromTimestamp(strtotime($data->lastconnect)),
+            'created_at' => Carbon::createFromTimeString($data->joined),
+            'last_login' => Carbon::createFromTimeString($data->lastconnect),
         ];
     }
 
@@ -57,8 +57,8 @@ class Mapping
             'num_file' => $data->FileCount ?? 1,
             'seeders' => $data->Seeders ?? 0,
             'leechers' => $data->Leechers ?? 0,
-            'created_at' => Carbon::createFromTimestamp(strtotime($data->data)),
-            'updated_at' => Carbon::createFromTimestamp(strtotime($data->lastupdate)),
+            'created_at' => Carbon::createFromTimeString($data->data),
+            'updated_at' => Carbon::createFromTimeString($data->lastupdate),
         ];
     }
 }
