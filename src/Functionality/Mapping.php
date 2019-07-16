@@ -2,25 +2,26 @@
 
 namespace pxgamer\GazelleToUnit3d\Functionality;
 
+use stdClass;
 use Carbon\Carbon;
 
 class Mapping
 {
     /**
      * @param  string  $type
-     * @param  \stdClass  $data
+     * @param  stdClass  $data
      * @return array
      */
-    public static function map(string $type, \stdClass $data): array
+    public static function map(string $type, stdClass $data): array
     {
         return self::{'map'.$type}($data);
     }
 
     /**
-     * @param  \stdClass  $data
+     * @param  stdClass  $data
      * @return array
      */
-    public static function mapUser(\stdClass $data): array
+    public static function mapUser(stdClass $data): array
     {
         return [
             'username' => $data->Username,
@@ -42,10 +43,10 @@ class Mapping
     }
 
     /**
-     * @param  \stdClass  $data
+     * @param  stdClass  $data
      * @return array
      */
-    public static function mapTorrent(\stdClass $data): array
+    public static function mapTorrent(stdClass $data): array
     {
         return [
             'info_hash' => unpack('H*', $data->info_hash)[1] ?? null,
