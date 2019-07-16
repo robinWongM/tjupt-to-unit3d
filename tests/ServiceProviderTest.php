@@ -1,19 +1,15 @@
 <?php
 
-namespace pxgamer\GazelleToUnit3d\Functionality;
+namespace pxgamer\GazelleToUnit3d\Tests;
 
 use Orchestra\Testbench\TestCase;
+use Illuminate\Foundation\Application;
 use pxgamer\GazelleToUnit3d\ServiceProvider;
 
-/**
- * Class ServiceProviderTest.
- */
 class ServiceProviderTest extends TestCase
 {
-    /**
-     * Test able to load aggregate service providers.
-     */
-    public function testServiceIsAvailable()
+    /** @test Test able to load aggregate service providers. */
+    public function itMakesTheServiceAvailable(): void
     {
         $loaded = $this->app->getLoadedProviders();
 
@@ -22,11 +18,11 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  Application  $app
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             ServiceProvider::class,

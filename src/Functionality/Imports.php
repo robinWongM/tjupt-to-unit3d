@@ -2,30 +2,28 @@
 
 namespace pxgamer\GazelleToUnit3d\Functionality;
 
+use ErrorException;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class Imports
- */
 class Imports
 {
     /**
-     * @param Connection $database
-     * @param string $type
-     * @param string $oldTable
-     * @param string $modelName
+     * @param  Connection  $database
+     * @param  string  $type
+     * @param  string  $oldTable
+     * @param  string  $modelName
      *
      * @return int
      *
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public static function importTable(Connection $database, string $type, string $oldTable, string $modelName): int
     {
         $results = 0;
 
-        if (!$database->getSchemaBuilder()->hasTable($oldTable)) {
-            throw new \ErrorException('`'.$oldTable.'` table missing.');
+        if (! $database->getSchemaBuilder()->hasTable($oldTable)) {
+            throw new ErrorException('`'.$oldTable.'` table missing.');
         }
 
         $oldData = $database->query()->select()->from($oldTable)->get();
@@ -42,8 +40,8 @@ class Imports
     }
 
     /**
-     * @param string $model
-     * @param array $data
+     * @param  string  $model
+     * @param  array  $data
      * @return bool
      */
     private static function import(string $model, array $data = []): bool

@@ -2,29 +2,21 @@
 
 namespace pxgamer\GazelleToUnit3d;
 
-class ServiceProvider extends \Illuminate\Support\ServiceProvider
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+
+class ServiceProvider extends BaseServiceProvider
 {
     /**
      * Bootstrap the application services.
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Commands\FromGazelle::class,
             ]);
         }
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

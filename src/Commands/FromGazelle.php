@@ -2,81 +2,62 @@
 
 namespace pxgamer\GazelleToUnit3d\Commands;
 
-use App\Torrent;
 use App\User;
+use App\Torrent;
+use ErrorException;
+use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\ConnectionInterface;
 use pxgamer\GazelleToUnit3d\Functionality\Imports;
 
-/**
- * Class FromGazelle
- */
 class FromGazelle extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    /** @var string The name and signature of the console command */
     protected $signature = 'unit3d:from-gazelle
-                            {--driver=mysql : The driver type to use (mysql, sqlsrv, etc.).}
-                            {--host=localhost : The hostname or IP.}
-                            {--database= : The database to select from.}
-                            {--username= : The database user.}
-                            {--password= : The database password.}
-                            {--prefix= : The database hostname or IP.}';
+                            {--driver=mysql : The driver type to use (mysql, sqlsrv, etc.)}
+                            {--host=localhost : The hostname or IP}
+                            {--database= : The database to select from}
+                            {--username= : The database user}
+                            {--password= : The database password}
+                            {--prefix= : The database hostname or IP}
+                            {--ignore-users : Ignore the users table when importing}
+                            {--ignore-torrents : Ignore the torrents table when importing}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Import data from a Gazelle instance to UNIT3D.';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    /** @var string The console command description */
+    protected $description = 'Import data from a Gazelle instance to UNIT3D';
 
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      *
-     * @throws \ErrorException
+     * @throws ErrorException
      */
-    public function handle()
+    public function handle(): void
     {
         $this->checkRequired($this->options());
 
         config([
             'database.connections.imports' => [
-                'driver'    => $this->option('driver'),
-                'host'      => $this->option('host'),
-                'database'  => $this->option('database'),
-                'username'  => $this->option('username'),
-                'password'  => $this->option('password'),
-                'prefix'    => $this->option('prefix'),
-                'charset'   => 'utf8',
+                'driver' => $this->option('driver'),
+                'host' => $this->option('host'),
+                'database' => $this->option('database'),
+                'username' => $this->option('username'),
+                'password' => $this->option('password'),
+                'prefix' => $this->option('prefix'),
+                'charset' => 'utf8',
                 'collation' => 'utf8_unicode_ci',
             ],
         ]);
 
         $database = DB::connection('imports');
 
-        Imports::importTable($database, 'User', 'users_main', User::class);
-        Imports::importTable($database, 'Torrent', 'torrents', Torrent::class);
+        $this->importUsers($database);
+        $this->importTorrents($database);
     }
 
-    /**
-     * @param array $options
-     */
-    public function checkRequired(array $options)
+    private function checkRequired(array $options): void
     {
         $requiredOptions = [
             'database',
@@ -85,9 +66,40 @@ class FromGazelle extends Command
         ];
 
         foreach ($requiredOptions as $option) {
-            if (!key_exists($option, $options) || !$options[$option]) {
-                throw new \InvalidArgumentException('Option `'.$option.'` not provided.');
+            if (! array_key_exists($option, $options) || ! $options[$option]) {
+                throw new InvalidArgumentException('Option `'.$option.'` not provided');
             }
         }
+    }
+
+    /**
+     * @param  ConnectionInterface  $database
+     *
+     * @throws ErrorException
+     */
+    private function importUsers(ConnectionInterface $database): void
+    {
+        if ($this->option('ignore-users')) {
+            $this->output->note('Ignoring users table');
+
+            return;
+        }
+
+        Imports::importTable($database, 'User', 'users', User::class);
+    }
+    /**
+     * @param  ConnectionInterface  $database
+     *
+     * @throws ErrorException
+     */
+    private function importTorrents(ConnectionInterface $database): void
+    {
+        if ($this->option('ignore-torrents')) {
+            $this->output->note('Ignoring torrents table');
+
+            return;
+        }
+
+        Imports::importTable($database, 'Torrent', 'files', Torrent::class);
     }
 }
