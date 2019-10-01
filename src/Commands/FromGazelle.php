@@ -87,6 +87,7 @@ class FromGazelle extends Command
 
         Imports::importTable($database, 'User', 'users', User::class);
     }
+
     /**
      * @param  ConnectionInterface  $database
      *
