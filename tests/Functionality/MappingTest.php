@@ -1,10 +1,10 @@
 <?php
 
-namespace pxgamer\GazelleToUnit3d\Tests\Functionality;
+namespace robinWongM\TjuptToUnit3d\Tests\Functionality;
 
 use Carbon\Carbon;
 use Orchestra\Testbench\TestCase;
-use pxgamer\GazelleToUnit3d\Functionality\Mapping;
+use robinWongM\TjuptToUnit3d\Functionality\Mapping;
 
 class MappingTest extends TestCase
 {

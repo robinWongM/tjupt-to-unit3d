@@ -1,7 +1,7 @@
 {
-    "name": "pxgamer/gazelle-to-unit3d",
+    "name": "robinwongm/tjupt-to-unit3d",
     "type": "library",
-    "description": "An artisan package to import a Gazelle database into UNIT3D.",
+    "description": "An artisan package to import a TJUPT database into UNIT3D.",
     "license": "MIT",
     "require": {
         "php": "^7.2"
@@ -11,13 +11,16 @@
         "orchestra/testbench": "^3.8"
     },
     "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
         "psr-4": {
-            "pxgamer\\GazelleToUnit3d\\": "src"
+            "robinWongM\\TjuptToUnit3d\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "pxgamer\\GazelleToUnit3d\\Tests\\": "tests"
+            "robinWongM\\TjuptToUnit3d\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -26,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "pxgamer\\GazelleToUnit3d\\ServiceProvider"
+                "robinWongM\\TjuptToUnit3d\\ServiceProvider"
             ]
         }
     }

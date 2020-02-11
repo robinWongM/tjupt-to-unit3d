@@ -1,6 +1,6 @@
 <?php
 
-namespace pxgamer\GazelleToUnit3d;
+namespace robinWongM\TjuptToUnit3d;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -15,7 +15,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                Commands\FromGazelle::class,
+                Commands\FromTjupt::class,
             ]);
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace pxgamer\GazelleToUnit3d\Functionality;
+namespace robinWongM\TjuptToUnit3d\Functionality;
 
 use ErrorException;
 use Illuminate\Database\Connection;

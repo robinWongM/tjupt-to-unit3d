@@ -1,10 +1,10 @@
 <?php
 
-namespace pxgamer\GazelleToUnit3d\Tests;
+namespace robinWongM\TjuptToUnit3d\Tests;
 
 use Orchestra\Testbench\TestCase;
 use Illuminate\Foundation\Application;
-use pxgamer\GazelleToUnit3d\ServiceProvider;
+use robinWongM\TjuptToUnit3d\ServiceProvider;
 
 class ServiceProviderTest extends TestCase
 {

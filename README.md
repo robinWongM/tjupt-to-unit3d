@@ -1,4 +1,4 @@
-# gazelle-to-unit3d
+# tjupt-to-unit3d
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -7,7 +7,7 @@
 [![Code Coverage][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-An artisan package to import a [Gazelle] database into [UNIT3D].
+An artisan package to import a TJUPT(NexusPHP) database into [UNIT3D].
 
 ## Install
 
