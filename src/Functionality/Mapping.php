@@ -4,6 +4,7 @@ namespace robinWongM\TjuptToUnit3d\Functionality;
 
 use stdClass;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class Mapping
 {
@@ -99,8 +100,26 @@ class Mapping
             'active' => ($data->enabled == 'yes') ?? true,
             'hidden' => true,
             'invites' => $data->invites ?? 0,
-            'created_at' => Carbon::createFromTimeString($data->added),
-            'last_login' => Carbon::createFromTimeString($data->last_login),
+            'created_at' => Carbon::createFromTimeString($data->added != '0000-00-00 00:00:00' ? $data->added : '0000-01-01 00:00:00'),
+            'last_login' => Carbon::createFromTimeString($data->last_login != '0000-00-00 00:00:00' ? $data->last_login : '0000-01-01 00:00:00'),
+            'rsskey' => md5(uniqid().time()),
+            'api_token' => Str::random(100),
+            'seedbonus' => $data->seedbonus,
+        ];
+    }
+
+    /**
+     * @param  stdClass  $data
+     * @return array
+     */
+    public static function mapCategory(stdClass $data): array
+    {
+        return [
+            'nexus_id' => $data->id,
+            'name' => $data->name,
+            'slug' => $data->class_name,
+            'position' => 0, // manually set default value
+            'no_meta' => 1,
         ];
     }
 
@@ -129,7 +148,7 @@ class Mapping
             'nfo' => $data->nfo ?? null,
             'imdb' => $data->url ?? null,
             'nexus_user_id' => $data->owner ?? null,
-            'announce' => $data->announce_url ?? null,
+            'announce' => config('app.url') . '/announce/PID',
             'description' => $data->descr ?? null,
             'num_file' => $data->numfiles ?? 1,
             'seeders' => $data->seeders ?? 0,
@@ -141,6 +160,31 @@ class Mapping
             // 以创建时间为最后修改时间；NexusPHP 的 last_action 是最后动向，不是最后修改
             'updated_at' => Carbon::createFromTimeString($data->added),
             'subhead' => $data->small_descr,
+            'slug' => 'nexus-imported',
+            'user_id' => 0, // default value
+            'nexus_category_id' => $data->category,
+            'anon' => $data->anonymous == 'yes' ? 1 : 0,
+            'type' => '',
+            // Auto moderate
+            'status' => 1,
+            'moderated_at' => Carbon::createFromTimeString($data->added),
+            'moderated_by' => 1,
+        ];
+    }
+
+    /**
+     * @param  stdClass  $data
+     * @return array
+     */
+    public static function mapComment(stdClass $data): array
+    {
+        return [
+            'nexus_id' => $data->id,
+            'content' => $data->text,
+            'nexus_torrent_id' => $data->torrent,
+            'nexus_user_id' => $data->user,
+            'created_at' => $data->added,
+            'updated_at' => Carbon::createFromTimeString($data->editdate != '0000-00-00 00:00:00' ? $data->editdate : $data->added)
         ];
     }
 
@@ -156,6 +200,7 @@ class Mapping
             'name' => $data->name,
             'description' => $data->description,
             'parent_id' => 0,
+            'nexus_permission' => $data->minclassview . '$114514$114514',
         ];
     }
 
@@ -170,7 +215,8 @@ class Mapping
             'position' => $data->sort,
             'name' => $data->name,
             'description' => $data->description,
-            'nexus_parent_id' => $data->forid
+            'nexus_parent_id' => $data->forid,
+            'nexus_permission' => $data->minclassread . '$' . $data->minclasswrite . '$' . $data->minclasscreate,
         ];
     }
 
@@ -190,12 +236,13 @@ class Mapping
             'last_post_user_id' => 0,
             'first_post_user_username' => '',
             'last_post_user_username' => '',
-            'last_reply_at' => '',
+            // 'last_reply_at' => Carbon::createFromTimeString('0000-01-01 00:00:00'),
             'views' => $data->views,
             // created_at
             // updated_at
             'nexus_user_id' => $data->userid,
             'nexus_parent_id' => $data->forumid,
+            'forum_id' => $data->forumid,
         ];
     }
 
@@ -209,9 +256,28 @@ class Mapping
             'nexus_id' => $data->id,
             'content' => $data->body,
             'created_at' => Carbon::createFromTimeString($data->added),
-            'updated_at' => Carbon::createFromTimeString($data->editdate) ?? Carbon::createFromTimeString($data->added),
+            'updated_at' => Carbon::createFromTimeString($data->editdate != '0000-00-00 00:00:00' ? $data->editdate : $data->added),
             'nexus_user_id' => $data->userid,
             'nexus_parent_id' => $data->topicid,
+            'user_id' => 0,
+            'topic_id' => 0,
         ];
     }
+    /**
+     * @param  stdClass  $data
+     * @return array
+     */
+    public static function mapChatMessage(stdClass $data): array
+    {
+        return [
+            'nexus_id' => $data->id,
+            'user_id' => 1,
+            'chatroom_id' => 1,
+            'message' => $data->text,
+            'created_at' => Carbon::createFromTimestamp($data->date),
+            'updated_at' => Carbon::createFromTimestamp($data->date),
+            'nexus_user_id' => $data->userid,
+        ];
+    }
+
 }

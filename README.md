@@ -3,7 +3,6 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
-[![Style CI][ico-styleci]][link-styleci]
 [![Code Coverage][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
@@ -14,7 +13,7 @@ An artisan package to import a TJUPT(NexusPHP) database into [UNIT3D].
 Via Composer
 
 ```bash
-$ composer require pxgamer/gazelle-to-unit3d --dev
+$ composer require robinwongm/tjupt-to-unit3d --dev
 ```
 
 To install, just:
@@ -23,10 +22,26 @@ To install, just:
 
 ## Usage
 
-For instructions on usage, run:
+**It's recommended to use the package under a fresh installation of [UNIT3D][unit3d].**
 
 ```bash
-php artisan unit3d:from-gazelle --help
+ # Optional but recommended: Make sure a fresh installation
+php artisan migrate:fresh --seed
+
+# IMPORTANT: Run migrations from this package
+php artisan migrate --path=vendor/robinwongm/tjupt-to-unit3d/src/migrations/2020_02_10_054032_add_nexus_compatibility.php
+
+# Import
+php artisan unit3d:from-tjupt --host=<YOUR TJUPT DATABASE HOST> --database=<YOUR TJUPT DATABASE NAME> --username=<YOUR TJUPT DATABASE USERNAME> --password=<YOUR TJUPT DATABASE PASSWORD>
+
+# Optional: Remove temporarily-added columns
+php artisan migrate --path=vendor/robinwongm/tjupt-to-unit3d/src/migrations/2020_02_10_054032_add_nexus_compatibility.php
+```
+
+For other instructions on usage, run:
+
+```bash
+php artisan unit3d:from-tjupt --help
 ```
 
 ## Change log
@@ -45,7 +60,8 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) and [CODE_OF_CONDUCT](.github
 
 ## Credits
 
-- [pxgamer][link-author]
+- [pxgamer][link-author] - original author
+- robinWongM - fork maintainer
 - [All Contributors][link-contributors]
 
 ## License
@@ -53,19 +69,16 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) and [CODE_OF_CONDUCT](.github
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
 [unit3d]: https://github.com/unit3d/unit3d
-[gazelle]: https://github.com/whatcd/gazelle
 
-[ico-version]: https://img.shields.io/packagist/v/pxgamer/gazelle-to-unit3d.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/robinwongm/tjupt-to-unit3d.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/HDInnovations/gazelle-to-unit3d/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/114096504/shield
-[ico-code-quality]: https://img.shields.io/codecov/c/github/HDInnovations/gazelle-to-unit3d.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/pxgamer/gazelle-to-unit3d.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/robinWongM/tjupt-to-unit3d/master.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/codecov/c/github/robinWongM/tjupt-to-unit3d.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/robinwongm/tjupt-to-unit3d.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/pxgamer/gazelle-to-unit3d
-[link-travis]: https://travis-ci.org/HDInnovations/gazelle-to-unit3d
-[link-styleci]: https://styleci.io/repos/114096504
-[link-code-quality]: https://codecov.io/gh/HDInnovations/gazelle-to-unit3d
-[link-downloads]: https://packagist.org/packages/pxgamer/gazelle-to-unit3d
+[link-packagist]: https://packagist.org/packages/robinwongm/tjupt-to-unit3d
+[link-travis]: https://travis-ci.org/robinWongM/tjupt-to-unit3d
+[link-code-quality]: https://codecov.io/gh/robinWongM/gazelle-to-unit3d
+[link-downloads]: https://packagist.org/packages/robinwongm/tjupt-to-unit3d
 [link-author]: https://github.com/pxgamer
 [link-contributors]: ../../contributors

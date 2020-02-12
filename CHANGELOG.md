@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 
 ## [Unreleased]
 
+## [v2.0.0] - 2020-02-12
+
+### Added
+- Add support for importing from TJUPT
+- Add ability to import forums, topics, and posts
+- Add ability to import logs from chatroom which is called "shoutbox" in NexusPHP
+- Add association process after importing
+
+### Changed
+- Users now come with their BONs(`seedbonus`)
+- Torrents now come with their comments
+
+### Fixed
+- Provide default values for NOT-NULL fields to avoid some failures
+
+### Removed
+- Remove support for importing from other systems
+
 ## [v1.1.0] - 2019-07-16
 
 ### Added
@@ -35,6 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 - Initial release
 
 [Unreleased]: https://github.com/HDInnovations/xbtit-to-unit3d/compare/master...develop
+[v2.0.0]: https://github.com/HDInnovations/gazelle-to-unit3d/compare/v1.1.0...v2.0.0
 [v1.1.0]: https://github.com/HDInnovations/gazelle-to-unit3d/compare/v1.0.2...v1.1.0
 [v1.0.2]: https://github.com/HDInnovations/gazelle-to-unit3d/compare/v1.0.1...v1.0.2
 [v1.0.1]: https://github.com/HDInnovations/gazelle-to-unit3d/compare/v1.0.0...v1.0.1

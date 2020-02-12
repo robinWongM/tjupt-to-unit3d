@@ -5,6 +5,12 @@ namespace robinWongM\TjuptToUnit3d\Commands;
 use ErrorException;
 use App\Models\User;
 use App\Models\Torrent;
+use App\Models\Forum;
+use App\Models\Topic;
+use App\Models\Post;
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Message;
 use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +29,12 @@ class FromTjupt extends Command
                             {--password= : The database password}
                             {--prefix= : The database hostname or IP}
                             {--ignore-users : Ignore the users table when importing}
+                            {--ignore-categories : Ignore the categories table when importing}
                             {--ignore-torrents : Ignore the torrents table when importing}
-                            {--ignore-forums : Ignore the forum-related tables when importing}';
+                            {--ignore-forums : Ignore the forum-related tables when importing}
+                            {--ignore-topics : Ignore the topics tables when importing}
+                            {--ignore-posts : Ignore the posts tables when importing}
+                            {--ignore-chat-messages : Ignore the chat messages tables when importing}';
 
     /** @var string The console command description */
     protected $description = 'Import data from a Tjupt instance to UNIT3D';
@@ -56,11 +66,13 @@ class FromTjupt extends Command
         $database = DB::connection('imports');
 
         $this->importUsers($database);
+        $this->importCategories($database);
         $this->importTorrents($database);
         $this->importForumCategories($database);
         $this->importForums($database);
         $this->importTopics($database);
         $this->importPosts($database);
+        $this->importChatMessages($database);
         Association::associateTable();
     }
 
@@ -92,7 +104,25 @@ class FromTjupt extends Command
             return;
         }
 
-        Imports::importTable($database, 'User', 'users', User::class);
+        Imports::importTable($database, 'User', 'users', User::class, true);
+        echo "User imported.\n";
+    }
+
+    /**
+     * @param  ConnectionInterface  $database
+     *
+     * @throws ErrorException
+     */
+    private function importCategories(ConnectionInterface $database): void
+    {
+        if ($this->option('ignore-categories')) {
+            $this->output->note('Ignoring categories table');
+
+            return;
+        }
+
+        Imports::importTable($database, 'Category', 'categories', Category::class, false);
+        echo "Categories imported.\n";
     }
 
     /**
@@ -108,7 +138,26 @@ class FromTjupt extends Command
             return;
         }
 
-        Imports::importTable($database, 'Torrent', 'torrents', Torrent::class);
+        Imports::importTable($database, 'Torrent', 'torrents', Torrent::class, false);
+        Imports::importTable($database, 'Comment', 'comments', Comment::class, false);
+        echo "Torrents & comments imported.\n";
+    }
+
+    /**
+     * @param  ConnectionInterface  $database
+     *
+     * @throws ErrorException
+     */
+    private function importChatMessages(ConnectionInterface $database): void
+    {
+        if ($this->option('ignore-chat-messages')) {
+            $this->output->note('Ignoring chat messages table');
+
+            return;
+        }
+
+        Imports::importTable($database, 'ChatMessage', 'shoutbox', Message::class, false);
+        echo "Chat messages imported.\n";
     }
 
     /**
@@ -118,13 +167,14 @@ class FromTjupt extends Command
      */
     private function importForumCategories(ConnectionInterface $database): void
     {
-        if ($this->option('ignore-forum')) {
+        if ($this->option('ignore-forums')) {
             $this->output->note('Ignoring forum categories table');
 
             return;
         }
 
-        Imports::importTable($database, 'ForumCategory', 'overforums', Forum::class);
+        Imports::importTable($database, 'ForumCategory', 'overforums', Forum::class, true);
+        echo "ForumCategories imported.\n";
     }
 
     /**
@@ -134,13 +184,14 @@ class FromTjupt extends Command
      */
     private function importForums(ConnectionInterface $database): void
     {
-        if ($this->option('ignore-forum')) {
+        if ($this->option('ignore-forums')) {
             $this->output->note('Ignoring forum table');
 
             return;
         }
 
-        Imports::importTable($database, 'Forum', 'forums', Forum::class);
+        Imports::importTable($database, 'Forum', 'forums', Forum::class, true);
+        echo "Forums imported.\n";
     }
 
     /**
@@ -150,13 +201,14 @@ class FromTjupt extends Command
      */
     private function importTopics(ConnectionInterface $database): void
     {
-        if ($this->option('ignore-forum')) {
+        if ($this->option('ignore-topics')) {
             $this->output->note('Ignoring topics table');
 
             return;
         }
 
-        Imports::importTable($database, 'Topic', 'topics', Torrent::class);
+        Imports::importTable($database, 'Topic', 'topics', Topic::class, false);
+        echo "Topics imported.\n";
     }
 
     /**
@@ -166,12 +218,13 @@ class FromTjupt extends Command
      */
     private function importPosts(ConnectionInterface $database): void
     {
-        if ($this->option('ignore-forum')) {
+        if ($this->option('ignore-posts')) {
             $this->output->note('Ignoring posts table');
 
             return;
         }
 
-        Imports::importTable($database, 'Post', 'posts', Post::class);
+        Imports::importTable($database, 'Post', 'posts', Post::class, false);
+        echo "Posts imported.\n";
     }
 }

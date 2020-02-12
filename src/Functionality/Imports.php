@@ -13,12 +13,13 @@ class Imports
      * @param  string  $type
      * @param  string  $oldTable
      * @param  string  $modelName
+     * @param  string  $autoTimestamp
      *
      * @return int
      *
      * @throws ErrorException
      */
-    public static function importTable(Connection $database, string $type, string $oldTable, string $modelName): int
+    public static function importTable(Connection $database, string $type, string $oldTable, string $modelName, string $autoTimestamp): int
     {
         $results = 0;
 
@@ -31,7 +32,7 @@ class Imports
         foreach ($oldData->all() as $oldDataItem) {
             $data = Mapping::map($type, $oldDataItem);
 
-            if (self::import($modelName, $data)) {
+            if (self::import($modelName, $data, $autoTimestamp)) {
                 $results++;
             }
         }
@@ -42,9 +43,10 @@ class Imports
     /**
      * @param  string  $model
      * @param  array  $data
+     * @param  bool   $updateTimestamp
      * @return bool
      */
-    private static function import(string $model, array $data = []): bool
+    private static function import(string $model, array $data = [], bool $updateTimestamp): bool
     {
         /** @var Model $new */
         $new = new $model();
@@ -53,6 +55,7 @@ class Imports
             $new->$item = $value;
         }
 
+        $new->timestamps = $updateTimestamp;
         return $new->save();
     }
 }
