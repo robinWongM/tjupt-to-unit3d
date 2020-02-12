@@ -78,7 +78,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [link-packagist]: https://packagist.org/packages/robinwongm/tjupt-to-unit3d
 [link-travis]: https://travis-ci.org/robinWongM/tjupt-to-unit3d
-[link-code-quality]: https://codecov.io/gh/robinWongM/gazelle-to-unit3d
+[link-code-quality]: https://codecov.io/gh/robinWongM/tjupt-to-unit3d
 [link-downloads]: https://packagist.org/packages/robinwongm/tjupt-to-unit3d
 [link-author]: https://github.com/pxgamer
 [link-contributors]: ../../contributors
