@@ -257,15 +257,15 @@ class FromTjupt extends Command
         foreach ($oldData->all() as $oldDataItem) {
             $avatarUrl = $oldDataItem->avatar;
             if($avatarUrl) {
-                $avatar = file_get_contents($avatarUrl);
-                $urlPath = parse_url($avatarUrl, PHP_URL_PATH);
-                $ext = pathinfo($urlPath, PATHINFO_EXTENSION);
-                $path = public_path('/files/img/' . $oldDataItem->username . '.' . $ext);
-                $ret = file_put_contents($path, $avatar);
-                if ($ret) {
-                    echo 'Download avatar of ' . $oldDataItem->username . ' successfully';
-                } else {
-                    echo 'Download avatar of ' . $oldDataItem->username . ' failed';
+                try {
+                    $avatar = file_get_contents($avatarUrl);
+                    $urlPath = parse_url($avatarUrl, PHP_URL_PATH);
+                    $ext = pathinfo($urlPath, PATHINFO_EXTENSION);
+                    $path = public_path('/files/img/' . $oldDataItem->username . '.' . $ext);
+                    file_put_contents($path, $avatar);
+                    echo 'Download avatar of ' . $oldDataItem->username . ' successfully' . "\n";
+                } catch (Exception $exception) {
+                    echo 'Download avatar of ' . $oldDataItem->username . ' failed' . "\n";
                 }
             }
         }
