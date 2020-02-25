@@ -140,7 +140,7 @@ class Mapping
     public static function mapTorrent(stdClass $data): array
     {
         return [
-            'nexus_id' => $data->id,
+            'id' => $data->id,
             'info_hash' => unpack('H*', $data->info_hash)[1] ?? null,
             'name' => $data->name ?? 0,
             'file_name' => $data->filename ?? null,
@@ -181,7 +181,7 @@ class Mapping
         return [
             'nexus_id' => $data->id,
             'content' => $data->text,
-            'nexus_torrent_id' => $data->torrent,
+            'torrent_id' => $data->torrent,
             'nexus_user_id' => $data->user,
             'created_at' => $data->added,
             'updated_at' => Carbon::createFromTimeString($data->editdate != '0000-00-00 00:00:00' ? $data->editdate : $data->added)
@@ -301,10 +301,9 @@ class Mapping
             'moderated_by' => 1,
             'created_at' => Carbon::createFromTimestamp($data->added),
             'updated_at' => Carbon::createFromTimestamp($data->added),
-            'nexus_torrent_id' => $data->torrent_id,
+            'torrent_id' => $data->torrent_id,
             'nexus_user_id' => $data->uppedby,
             'user_id' => 1,
-            'torrent_id' => 1, // Please make sure there exists this torrent
         ];
     }
 }

@@ -81,7 +81,6 @@ class Association
         foreach (Comment::all() as $item) {
             if (!is_null($item->nexus_id)) {
                 $item->user_id = User::where('nexus_id', $item->nexus_user_id)->first()->id;
-                $item->torrent_id = Torrent::where('nexus_id', $item->nexus_torrent_id)->first()->id;
                 $item->timestamps = false;
                 $item->save();
                 $results++;
@@ -324,13 +323,11 @@ class Association
         echo 'All subtitles: ' . Subtitle::count() . "\n";
         foreach (Subtitle::all() as $item) {
             $user = User::where('nexus_id', $item->nexus_user_id)->first();
-            $torrent = Torrent::where('nexus_id', $item->nexus_torrent_id)->first();
             if ($user) {
                 $item->user_id = $user->id;
             } else {
                 $item->user_id = 1;
             }
-            $item->torrent_id = $torrent->id;
             $item->timestamps = false;
             $item->save();
             $results++;
