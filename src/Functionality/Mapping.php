@@ -143,7 +143,7 @@ class Mapping
             'id' => $data->id,
             'info_hash' => unpack('H*', $data->info_hash)[1] ?? null,
             'name' => $data->name ?? 0,
-            'file_name' => $data->filename ?? null,
+            'file_name' => $data->id . '.torrent' ?? null,
             'size' => $data->size ?? 0,
             'nfo' => null, // disable nfo due to character set issue
             'imdb' => $data->url ?? null,
