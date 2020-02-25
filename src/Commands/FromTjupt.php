@@ -69,6 +69,7 @@ class FromTjupt extends Command
         $database = DB::connection('imports');
 
         $this->importUsers($database);
+        $this->importAvatars($database);
         $this->importCategories($database);
         $this->importTorrents($database);
         $this->importForumCategories($database);
@@ -247,5 +248,26 @@ class FromTjupt extends Command
 
         Imports::importTable($database, 'Subtitle', 'subs', Subtitle::class, false);
         echo "Subtitles imported.\n";
+    }
+
+    private function importAvatars(ConnectionInterface $database): void
+    {
+        $oldData = $database->query()->select()->from('users')->get();
+
+        foreach ($oldData->all() as $oldDataItem) {
+            $avatarUrl = $oldDataItem->avatar;
+            if($avatarUrl) {
+                $avatar = file_get_contents($avatarUrl);
+                $urlPath = parse_url($avatarUrl, PHP_URL_PATH);
+                $ext = pathinfo($urlPath, PATHINFO_EXTENSION);
+                $path = public_path('/files/img/' . $oldDataItem->username . '.' . $ext);
+                $ret = file_put_contents($path, $avatar);
+                if ($ret) {
+                    echo 'Download avatar of ' . $oldDataItem->username . ' successfully';
+                } else {
+                    echo 'Download avatar of ' . $oldDataItem->username . ' failed';
+                }
+            }
+        }
     }
 }
