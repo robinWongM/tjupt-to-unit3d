@@ -145,7 +145,7 @@ class Mapping
             'name' => $data->name ?? 0,
             'file_name' => $data->filename ?? null,
             'size' => $data->size ?? 0,
-            'nfo' => $data->nfo ?? null,
+            'nfo' => null, // disable nfo due to character set issue
             'imdb' => $data->url ?? null,
             'nexus_user_id' => $data->owner ?? null,
             'announce' => config('app.url') . '/announce/PID',
@@ -292,7 +292,7 @@ class Mapping
             'title' => $data->title,
             'file_name' => $data->filename,
             'ext' => $data->ext,
-            'anonymous' => $data->anonymous,
+            'anonymous' => $data->anonymous == 'yes' ? 1: 0,
             'hits' => $data->hits,
             'size' => $data->size,
             // Auto moderate
