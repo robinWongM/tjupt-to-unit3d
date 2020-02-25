@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 
 ## [Unreleased]
 
+## [v2.1.1] - 2020-02-25
+
+### Changed
+- The number of leechers and seeders for torrents won't be imported now 
+
+## [v2.1.0] - 2020-02-25
+
+### Added
+- Add ability to import subtitles
+
 ## [v2.0.0] - 2020-02-12
 
 ### Added
