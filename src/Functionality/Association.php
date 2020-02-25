@@ -16,6 +16,7 @@ use App\Models\Group;
 use App\Models\Permission;
 use App\Models\Comment;
 use App\Models\Message;
+use App\Models\Subtitle;
 
 class Association
 {
@@ -35,6 +36,7 @@ class Association
         $results += self::associateTopicsAndPosts();
         self::reverseAssociateForums();
         $results += self::associateChatMessages();
+        $results += self::associateSubtitles();
 
         return $results;
     }
@@ -305,6 +307,36 @@ class Association
         }
 
         echo 'Processed ' . $results . ' messages' . "\n";
+
+        return $results;
+    }
+
+    /**
+     *
+     * @return int
+     *
+     * @throws ErrorException
+     */
+    public static function c(): int
+    {
+        $results = 0;
+
+        echo 'All subtitles: ' . Subtitle::count() . "\n";
+        foreach (Subtitle::all() as $item) {
+            $user = User::where('nexus_id', $item->nexus_user_id)->first();
+            $torrent = Torrent::where('nexus_id', $item->nexus_torrent_id)->first();
+            if ($user) {
+                $item->user_id = $user->id;
+            } else {
+                $item->user_id = 1;
+            }
+            $item->torrent_id = $torrent->id;
+            $item->timestamps = false;
+            $item->save();
+            $results++;
+        }
+
+        echo 'Processed ' . $results . ' subtitles' . "\n";
 
         return $results;
     }

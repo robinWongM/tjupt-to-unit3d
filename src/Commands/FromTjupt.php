@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Message;
+use App\Models\Subtitle;
 use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -31,10 +32,12 @@ class FromTjupt extends Command
                             {--ignore-users : Ignore the users table when importing}
                             {--ignore-categories : Ignore the categories table when importing}
                             {--ignore-torrents : Ignore the torrents table when importing}
+                            {--disable-nfo : Ignore the nfo of torrents when importing}
                             {--ignore-forums : Ignore the forum-related tables when importing}
                             {--ignore-topics : Ignore the topics tables when importing}
                             {--ignore-posts : Ignore the posts tables when importing}
-                            {--ignore-chat-messages : Ignore the chat messages tables when importing}';
+                            {--ignore-chat-messages : Ignore the chat messages tables when importing}
+                            {--ignore-subtitles : Ignore the subtitles tables when importing}';
 
     /** @var string The console command description */
     protected $description = 'Import data from a Tjupt instance to UNIT3D';
@@ -73,6 +76,7 @@ class FromTjupt extends Command
         $this->importTopics($database);
         $this->importPosts($database);
         $this->importChatMessages($database);
+        $this->importSubtitles($database);
         Association::associateTable();
     }
 
@@ -226,5 +230,22 @@ class FromTjupt extends Command
 
         Imports::importTable($database, 'Post', 'posts', Post::class, false);
         echo "Posts imported.\n";
+    }
+
+    /**
+     * @param  ConnectionInterface  $database
+     *
+     * @throws ErrorException
+     */
+    private function importSubtitles(ConnectionInterface $database): void
+    {
+        if ($this->option('ignore-subtitles')) {
+            $this->output->note('Ignoring subtitles table');
+
+            return;
+        }
+
+        Imports::importTable($database, 'Subtitle', 'subs', Subtitle::class, false);
+        echo "Subtitles imported.\n";
     }
 }

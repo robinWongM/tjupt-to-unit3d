@@ -263,6 +263,7 @@ class Mapping
             'topic_id' => 0,
         ];
     }
+
     /**
      * @param  stdClass  $data
      * @return array
@@ -280,4 +281,28 @@ class Mapping
         ];
     }
 
+    /**
+     * @param  stdClass  $data
+     * @return array
+     */
+    public static function mapSubtitle(stdClass $data): array
+    {
+        return [
+            'id' => $data->id,
+            'title' => $data->title,
+            'file_name' => $data->filename,
+            'ext' => $data->ext,
+            'anonymous' => $data->anonymous,
+            'hits' => $data->hits,
+            'size' => $data->size,
+            // Auto moderate
+            'status' => 1,
+            'moderated_at' => Carbon::createFromTimeString($data->added),
+            'moderated_by' => 1,
+            'created_at' => Carbon::createFromTimestamp($data->added),
+            'updated_at' => Carbon::createFromTimestamp($data->added),
+            'nexus_torrent_id' => $data->torrent_id,
+            'nexus_user_id' => $data->uppedby,
+        ];
+    }
 }
