@@ -93,7 +93,7 @@ class Mapping
             'email' => $data->email ?? null,
             'uploaded' => $data->uploaded ?? 0,
             'downloaded' => $data->downloaded ?? 0,
-            'image' => $data->avatar ?? null,
+            'image' => $data->avatar ? $data->username . '.' . pathinfo(parse_url($data->avatar, PHP_URL_PATH), PATHINFO_EXTENSION) : null,
             'about' => $data->info ?? null,
             'signature' => $data->signature ?? null,
             'title' => $data->title ?? null,

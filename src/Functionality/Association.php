@@ -53,13 +53,11 @@ class Association
 
         echo 'All torrents: ' . Torrent::withAnyStatus()->count() . "\n";
         foreach (Torrent::withAnyStatus()->get() as $item) {
-            if (!is_null($item->nexus_id)) {
-                $item->user_id = User::where('nexus_id', $item->nexus_user_id)->first()->id;
-                $item->category_id = Category::where('nexus_id', $item->nexus_category_id)->first()->id;
-                $item->timestamps = false;
-                $item->save();
-                $results++;
-            }
+            $item->user_id = User::where('nexus_id', $item->nexus_user_id)->first()->id;
+            $item->category_id = Category::where('nexus_id', $item->nexus_category_id)->first()->id;
+            $item->timestamps = false;
+            $item->save();
+            $results++;
         }
 
         echo 'Processed ' . $results . ' torrents' . "\n";
