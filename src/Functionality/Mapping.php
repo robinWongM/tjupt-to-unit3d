@@ -303,6 +303,8 @@ class Mapping
             'updated_at' => Carbon::createFromTimestamp($data->added),
             'nexus_torrent_id' => $data->torrent_id,
             'nexus_user_id' => $data->uppedby,
+            'user_id' => 1,
+            'torrent_id' => 1, // Please make sure there exists this torrent
         ];
     }
 }

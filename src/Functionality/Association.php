@@ -317,7 +317,7 @@ class Association
      *
      * @throws ErrorException
      */
-    public static function c(): int
+    public static function associateSubtitles(): int
     {
         $results = 0;
 

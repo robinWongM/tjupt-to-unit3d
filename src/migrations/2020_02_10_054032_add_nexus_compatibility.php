@@ -93,6 +93,14 @@ class AddNexusCompatibility extends Migration
                 ->nullable()
                 ->default(null);
         });
+        Schema::table('subtitles', function (Blueprint $table) {
+            $table->integer('nexus_user_id')
+                ->nullable()
+                ->default(null);
+            $table->integer('nexus_torrent_id')
+                ->nullable()
+                ->default(null);
+        });
     }
 
     /**
@@ -136,6 +144,10 @@ class AddNexusCompatibility extends Migration
         Schema::table('messages', function (Blueprint $table) {
             $table->dropColumn('nexus_id');
             $table->dropColumn('nexus_user_id');
+        });
+        Schema::table('subtitles', function (Blueprint $table) {
+            $table->dropColumn('nexus_user_id');
+            $table->dropColumn('nexus_torrent_id');
         });
     }
 }
